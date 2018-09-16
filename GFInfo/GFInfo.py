@@ -88,7 +88,7 @@ class GFInfo:
         if ' ' in input:
             input = '_'.join(input.split());
         fullUrl = url+input
-        with open(path) as f:
+        with open(path, encoding='utf-8') as f:
             data = json.load(f)
         embed=discord.Embed(color = 13525284)
         if data[input.rstrip()]["rank"] == "2":
