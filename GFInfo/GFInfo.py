@@ -6,11 +6,10 @@ try: # check if BeautifulSoup4 is installed
 	soupAvailable = True
 except:
 	soupAvailable = False
-import aiohttp
 import os
 import re
-import urllib.request
 import json
+import requests
 
 
 class GFInfo:
@@ -18,6 +17,11 @@ class GFInfo:
 
     def __init__(self, bot):
         self.bot = bot
+        self.api_key = "3f6fc1942e5454a10b07dc1d9c70f5c1fa9850ff"
+        self.output_type = "2"
+        self.testmode = "0"
+        self.db = "99"
+        self.numres = "5"
 
     @commands.command(pass_context=True, no_pm=True)
     async def tcraftname(self, ctx, *, input):
@@ -110,6 +114,28 @@ class GFInfo:
         embed.add_field(name="Reward", value=data[input.rstrip()]["reward"], inline=True)
         embed.add_field(name="Skills", value=data[input.rstrip()]["skill"]["name"] + " - " + data[input.rstrip()]["skill"]["effect"], inline=True)
         await self.bot.say(embed=embed)
+
+    @commands.command(pass_context=True, no_pm=True)
+    async def sauce(self, ctx, input):
+        """Show gacha girl info by name"""
+        defaultLink = "https://saucenao.com/search.php?"
+        fullLink = defaultLink + "db=" + self.db + "&output_type=" + self.output_type + "&testmode=" + self.testmode + "&numres=" + self.numres + "&api_key=" + self.api_key + "&url=" + input
+        r = requests.get(fullLink)
+        if r.status_code == 200:
+            data = self.load_json(r)
+            for result in data["results"]:
+                embed=discord.Embed(title="Result")
+                embed.add_field(name="Similarity", value=result["header"]["similarity"], inline=False)
+                embed.add_field(name="Name", value=result["header"]["index_name"], inline=True)
+                embed.add_field(name="Url", value=result["data"]["ext_urls"], inline=True)
+                await self.bot.say(embed=embed)
+
+    def load_json(self, result):
+        try:
+          data = json.loads(result.text)
+          return data
+        except ValueError:
+          print("Url Error.") 
 
 def setup(bot):
     if soupAvailable:
