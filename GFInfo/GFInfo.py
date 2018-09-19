@@ -137,6 +137,51 @@ class GFInfo:
         except ValueError:
           print("Url Error.") 
 
+    @commands.command(pass_context=True)
+    async def nyaa(self, ctx, input):
+        """Find sukebei link"""
+        defaultLink = "https://sukebei.nyaa.si/?f=0&c=1_3&q="
+        fullLink = defaultLink + input
+        result = requests.get(fullLink)
+        soup = BeautifulSoup(result.content, 'html.parser')
+        tableTorrent = soup.select('table tr')
+        torrents = []
+        for row in tableTorrent:
+            block = []
+            for td in row.find_all('td'):
+                if td.find_all('a'):
+                    for link in td.find_all('a'):
+                        if link.get('href')[-9:] != '#comments':
+                            block.append(link.get('href'))
+                            if link.text.rstrip():
+                                block.append(link.text)
+
+                if td.text.rstrip():
+                    block.append(td.text.rstrip())
+            try:
+                torrent = {
+                'url': "http://sukebei.nyaa.si{}".format(block[1]),
+                'name': block[2],
+                'size': block[6],
+                'date': block[7],
+                'seeders': block[8],
+                'leechers': block[9],
+                'completed_downloads': block[10],
+                }
+                
+                torrents.append(torrent)
+            except IndexError as ie:
+                pass
+
+        for link in torrents:
+            embed=discord.Embed(title=link['name'], url=link['url'])
+            embed.add_field(name="Size", value=link['size'], inline=True)
+            embed.add_field(name="Date", value=link['date'], inline=True)
+            embed.add_field(name="Completed Downloads", value=link['completed_downloads'], inline=False)
+            embed.add_field(name="Seeder", value=link['seeders'], inline=True)
+            embed.add_field(name="Leecher", value=link['leechers'], inline=True)
+            await self.bot.say(embed=embed)
+
 def setup(bot):
     if soupAvailable:
         bot.add_cog(GFInfo(bot))
