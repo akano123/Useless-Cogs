@@ -115,11 +115,17 @@ class GFInfo:
         embed.add_field(name="Skills", value=data[input.rstrip()]["skill"]["name"] + " - " + data[input.rstrip()]["skill"]["effect"], inline=True)
         await self.bot.say(embed=embed)
 
+
     @commands.command(pass_context=True, no_pm=True)
     async def sauce(self, ctx, input):
         """Show gacha girl info by name"""
         defaultLink = "https://saucenao.com/search.php?"
         fullLink = defaultLink + "db=" + self.db + "&output_type=" + self.output_type + "&testmode=" + self.testmode + "&numres=" + self.numres + "&api_key=" + self.api_key + "&url=" + input
+        extension = [".jpg", ".png", ".gif", ".webp", ".svg",".tif", ".tiff" , ".jif", ".jfif", ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd"]
+        for ex in extension:
+            if ex in fullLink:
+                i = fullLink.index(ex)
+                fullLink = fullLink[:i+len(ex)]
         r = requests.get(fullLink)
         if r.status_code == 200:
             data = self.load_json(r)
