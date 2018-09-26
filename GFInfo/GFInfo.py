@@ -133,7 +133,20 @@ class GFInfo:
                 embed=discord.Embed(title="Result")
                 embed.add_field(name="Similarity", value=result["header"]["similarity"], inline=False)
                 embed.add_field(name="Name", value=result["header"]["index_name"], inline=True)
-                embed.add_field(name="Url", value=result["data"]["ext_urls"], inline=True)
+                if 'eng_name' in result["data"]:
+                    embed.add_field(name="Eng Name", value=result["data"]["eng_name"], inline=True)
+                if 'jp_name' in result["data"]:
+                    embed.add_field(name="JP Name", value=result["data"]["jp_name"], inline=True)
+                if 'ext_urls' in result["data"]:
+                    embed.add_field(name="Url", value=result["data"]["ext_urls"], inline=True)
+                if 'danbooru_id' in result["data"]:
+                    embed.add_field(name="Url", value=result["data"]["danbooru_id"], inline=True)
+                if 'gelbooru_id' in result["data"]:
+                    embed.add_field(name="Url", value=result["data"]["gelbooru_id"], inline=True)
+                if 'pixiv_id' in result["data"]:
+                    embed.add_field(name="Url", value=result["data"]["pixiv_id"], inline=True)
+                if 'title' in result["data"]:
+                    embed.add_field(name="Url", value=result["data"]["title"], inline=True)
                 await self.bot.say(embed=embed)
 
     def load_json(self, result):
