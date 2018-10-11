@@ -161,6 +161,7 @@ class GFInfo:
         """Find sukebei link"""
         defaultLink = "https://sukebei.nyaa.si/?f=0&c=1_3&q="
         fullLink = defaultLink + input
+        #await self.bot.say(fullLink)
         result = requests.get(fullLink)
         soup = BeautifulSoup(result.content, 'html.parser')
         tableTorrent = soup.select('table tr')
@@ -178,16 +179,26 @@ class GFInfo:
                 if td.text.rstrip():
                     block.append(td.text.rstrip())
             try:
-                torrent = {
-                'url': "http://sukebei.nyaa.si{}".format(block[1]),
-                'name': block[2],
-                'size': block[6],
-                'date': block[7],
-                'seeders': block[8],
-                'leechers': block[9],
-                'completed_downloads': block[10],
-                }
-                
+                if len(block) == 11:
+                    torrent = {
+                        'url': "http://sukebei.nyaa.si{}".format(block[1]),
+                        'name': block[2],
+                        'size': block[6],
+                        'date': block[7],
+                        'seeders': block[8],
+                        'leechers': block[9],
+                        'completed_downloads': block[10],
+                    }
+                else:
+                    torrent = {
+                        'url': "http://sukebei.nyaa.si{}".format(block[1]),
+                        'name': block[2],
+                        'size': block[5],
+                        'date': block[6],
+                        'seeders': block[7],
+                        'leechers': block[8],
+                        'completed_downloads': block[9],
+                    }
                 torrents.append(torrent)
             except IndexError as ie:
                 pass
