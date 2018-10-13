@@ -247,7 +247,7 @@ class GFInfo:
             image.paste(img1, (197,66,257,126))
             image.paste(img2, (570,75,630,135))
             image.save(path + fileafter)
-            await bot.send_file(path + fileafter)
+            await self.bot.send_file(path + fileafter)
         else:
             await self.bot.say("Mention 2 faggot only")
         
