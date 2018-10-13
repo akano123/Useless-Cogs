@@ -244,8 +244,12 @@ class GFInfo:
             img2.thumbnail((newW2, newH2))
 
             image = Image.open(path+filename)
-            image.paste(img1, (175,32,275,132))
-            image.paste(img2, (560,47,660,147))
+            start1 = 175
+            start2 = 32
+            start3 = 560
+            start4 = 47
+            image.paste(img1, (start1,start2,(start1+img1.width),(start2+img1.height)))
+            image.paste(img2, (start3,start4,(start3+img2.width),(start4+img2.height)))
             image.save(path + fileafter)
             await self.bot.send_file(ctx.message.channel, path + fileafter)
         else:
