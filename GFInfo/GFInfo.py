@@ -230,7 +230,7 @@ class GFInfo:
             response1 = requests.get(url[0])
             img1 = Image.open(BytesIO(response1.content))
             width1, height1 = img1.size
-            ratio1 = min(60/width1, 60/height1)
+            ratio1 = min(100/width1, 100/height1)
             newW1 = width1 * ratio1
             newH1 = height1 * ratio1
             img1.thumbnail((newW1, newH1))
@@ -238,14 +238,14 @@ class GFInfo:
             response2 = requests.get(url[1])
             img2 = Image.open(BytesIO(response2.content))
             width2, height2 = img2.size
-            ratio2 = min(60/width2, 60/height2)
+            ratio2 = min(100/width2, 100/height2)
             newW2 = width2 * ratio2
             newH2 = height2 * ratio2
             img2.thumbnail((newW2, newH2))
 
             image = Image.open(path+filename)
-            image.paste(img1, (197,66,257,126))
-            image.paste(img2, (570,75,630,135))
+            image.paste(img1, (175,32,275,132))
+            image.paste(img2, (560,47,660,147))
             image.save(path + fileafter)
             await self.bot.send_file(ctx.message.channel, path + fileafter)
         else:
