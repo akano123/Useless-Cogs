@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from PIL import Image
+from io import BytesIO
 try: # check if BeautifulSoup4 is installed
 	from bs4 import BeautifulSoup
 	soupAvailable = True
