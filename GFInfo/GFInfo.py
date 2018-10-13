@@ -230,7 +230,7 @@ class GFInfo:
             response1 = requests.get(url[0])
             img1 = Image.open(BytesIO(response1.content))
             width1, height1 = img1.size
-            ratio1 = min(60/width, 60/height)
+            ratio1 = min(60/width1, 60/height1)
             newW1 = width1 * ratio1
             newH1 = height1 * ratio1
             img1.thumbnail((newW1, newH1))
@@ -238,7 +238,7 @@ class GFInfo:
             response2 = requests.get(url[2])
             img2 = Image.open(BytesIO(response2.content))
             width2, height2 = img2.size
-            ratio2 = min(60/width, 60/height)
+            ratio2 = min(60/width2, 60/height2)
             newW2 = width2 * ratio2
             newH2 = height2 * ratio2
             img2.thumbnail((newW2, newH2))
