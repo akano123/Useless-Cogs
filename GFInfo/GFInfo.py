@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-
+from PIL import Image
 try: # check if BeautifulSoup4 is installed
 	from bs4 import BeautifulSoup
 	soupAvailable = True
@@ -211,6 +211,46 @@ class GFInfo:
             embed.add_field(name="Seeder", value=link['seeders'], inline=True)
             embed.add_field(name="Leecher", value=link['leechers'], inline=True)
             await self.bot.say(embed=embed)
+
+    @commands.command(pass_context=True, no_pm=True)
+    async def samefag(self, ctx, *, input):
+        """You all are the same"""
+        filename = "spiderman.jpg"
+        fileafter = "after.jpg"
+        path = "data/meme/"
+        image = Image.open(path+filename)
+        if os.path.exists(path + fileafter):
+            os.remove(path + fileafter)
+        if (ctx.message.mentions.__len__()>0 and ctx.message.mentions.__len__() <= 2):
+            url = []
+            for user in ctx.message.mentions:
+                url.append(user.avatar_url)
+            
+            response1 = requests.get(url[0])
+            img1 = Image.open(BytesIO(response1.content))
+            width1, height1 = img1.size
+            ratio1 = min(60/width, 60/height)
+            newW1 = width1 * ratio1
+            newH1 = height1 * ratio1
+            img1.thumbnail((newW1, newH1))
+
+            response2 = requests.get(url[2])
+            img2 = Image.open(BytesIO(response2.content))
+            width2, height2 = img2.size
+            ratio2 = min(60/width, 60/height)
+            newW2 = width2 * ratio2
+            newH2 = height2 * ratio2
+            img2.thumbnail((newW2, newH2))
+
+            image = Image.open(path+filename)
+            image.paste(img1, (197,66,257,126))
+            image.paste(img2, (570,75,630,135))
+            image.save(path + fileafter)
+            await bot.send_file(path + fileafter)
+        else:
+            await self.bot.say("Mention 2 faggot only")
+        
+        
 
 def setup(bot):
     if soupAvailable:
