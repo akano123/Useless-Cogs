@@ -235,7 +235,7 @@ class GFInfo:
             newH1 = height1 * ratio1
             img1.thumbnail((newW1, newH1))
 
-            response2 = requests.get(url[2])
+            response2 = requests.get(url[1])
             img2 = Image.open(BytesIO(response2.content))
             width2, height2 = img2.size
             ratio2 = min(60/width2, 60/height2)
